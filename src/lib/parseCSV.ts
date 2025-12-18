@@ -11,56 +11,61 @@ export interface Provider {
 }
 
 export function parseCSV(csvText: string): Provider[] {
-  const lines = csvText.split('\n');
-  const providers: Provider[] = [];
+  // First, join multi-line records into single lines
+  const rawLines = csvText.split('\n');
+  const joinedLines: string[] = [];
+  let currentLine = '';
+  let inQuotes = false;
   
-  let currentProvider: Partial<Provider> | null = null;
-  let currentDescription = '';
-  let inMultilineDescription = false;
-  
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i];
+  for (let i = 0; i < rawLines.length; i++) {
+    const line = rawLines[i];
     
-    // Check if this is a new provider (starts with a company name and has commas)
-    const isNewProvider = line.match(/^[^,]+,(https?:\/\/|www\.)/i) || 
-                          line.match(/^[^,]+,[^,]*,[A-Z][a-z]+/);
+    if (currentLine === '') {
+      currentLine = line;
+    } else {
+      currentLine += '\n' + line;
+    }
     
-    if (isNewProvider && !inMultilineDescription) {
-      // Save previous provider
-      if (currentProvider && currentProvider.name) {
-        currentProvider.description = currentDescription.trim();
-        providers.push(currentProvider as Provider);
-      }
-      
-      // Parse new provider
-      const parts = parseCSVLine(line);
-      if (parts.length >= 8) {
-        currentProvider = {
-          id: `provider-${providers.length}`,
-          name: parts[0]?.trim() || '',
-          website: normalizeUrl(parts[1]?.trim() || ''),
-          country: parts[2]?.trim() || '',
-          coverage: parts[3]?.trim() || '',
-          ideation: parseServices(parts[5] || ''),
-          scaleup: parseServices(parts[6] || ''),
-          commercialisation: parseServices(parts[7] || ''),
-        };
-        currentDescription = parts[4] || '';
-        inMultilineDescription = (currentDescription.match(/"/g) || []).length % 2 !== 0;
-      }
-    } else if (currentProvider) {
-      // Continue multiline description
-      currentDescription += '\n' + line;
-      if (line.includes('"')) {
-        inMultilineDescription = false;
-      }
+    // Count quotes to determine if we're inside a quoted field
+    const quoteCount = (currentLine.match(/"/g) || []).length;
+    inQuotes = quoteCount % 2 !== 0;
+    
+    if (!inQuotes) {
+      joinedLines.push(currentLine);
+      currentLine = '';
     }
   }
   
-  // Save last provider
-  if (currentProvider && currentProvider.name) {
-    currentProvider.description = currentDescription.trim();
-    providers.push(currentProvider as Provider);
+  // Don't forget the last line if there's any remaining
+  if (currentLine) {
+    joinedLines.push(currentLine);
+  }
+  
+  const providers: Provider[] = [];
+  
+  // Skip header (first line)
+  for (let i = 1; i < joinedLines.length; i++) {
+    const line = joinedLines[i].trim();
+    if (!line) continue;
+    
+    const parts = parseCSVLine(line);
+    
+    // Need at least company name
+    if (!parts[0]?.trim()) continue;
+    
+    const provider: Provider = {
+      id: `provider-${providers.length}`,
+      name: parts[0]?.trim() || '',
+      website: normalizeUrl(parts[1]?.trim() || ''),
+      country: parts[2]?.trim() || '',
+      coverage: parts[3]?.trim() || '',
+      description: (parts[4] || '').replace(/^"|"$/g, '').trim(),
+      ideation: parseServices(parts[5] || ''),
+      scaleup: parseServices(parts[6] || ''),
+      commercialisation: parseServices(parts[7] || ''),
+    };
+    
+    providers.push(provider);
   }
   
   // Filter out duplicates and empty entries
