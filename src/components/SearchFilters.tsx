@@ -1,7 +1,6 @@
-import { Search, X, Filter, Lightbulb, Rocket, TrendingUp } from 'lucide-react';
+import { Search, X, Wrench, Briefcase, Leaf, Coins, Lightbulb, Rocket, TrendingUp } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -10,40 +9,54 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import { ServiceCategory } from '@/lib/parseCSV';
 
 interface SearchFiltersProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   selectedCountry: string;
   onCountryChange: (country: string) => void;
+  selectedServiceCategory: ServiceCategory | 'all';
+  onServiceCategoryChange: (category: ServiceCategory | 'all') => void;
   selectedVoucher: string;
   onVoucherChange: (voucher: string) => void;
   countries: string[];
   totalResults: number;
 }
 
+const serviceCategories = [
+  { value: 'all' as const, label: 'All Services', icon: null, color: '' },
+  { value: 'technical' as const, label: 'Technical', icon: Wrench, color: 'bg-tag-technical/10 text-tag-technical border-tag-technical/30 hover:bg-tag-technical/20' },
+  { value: 'business' as const, label: 'Business', icon: Briefcase, color: 'bg-tag-business/10 text-tag-business border-tag-business/30 hover:bg-tag-business/20' },
+  { value: 'social' as const, label: 'Social/Environmental', icon: Leaf, color: 'bg-tag-social/10 text-tag-social border-tag-social/30 hover:bg-tag-social/20' },
+  { value: 'funding' as const, label: 'Funding', icon: Coins, color: 'bg-tag-funding/10 text-tag-funding border-tag-funding/30 hover:bg-tag-funding/20' },
+];
+
+const voucherTypes = [
+  { value: 'all', label: 'All Vouchers', icon: null },
+  { value: 'ideation', label: 'Ideation €25K', icon: Lightbulb },
+  { value: 'scaleup', label: 'Scale-up €50K', icon: Rocket },
+  { value: 'commercialisation', label: 'Commercialisation €25K', icon: TrendingUp },
+];
+
 export function SearchFilters({
   searchQuery,
   onSearchChange,
   selectedCountry,
   onCountryChange,
+  selectedServiceCategory,
+  onServiceCategoryChange,
   selectedVoucher,
   onVoucherChange,
   countries,
   totalResults,
 }: SearchFiltersProps) {
-  const voucherTypes = [
-    { value: 'all', label: 'All Vouchers', icon: null },
-    { value: 'ideation', label: 'Ideation (€25K)', icon: Lightbulb },
-    { value: 'scaleup', label: 'Scale-up (€50K)', icon: Rocket },
-    { value: 'commercialisation', label: 'Commercialisation (€25K)', icon: TrendingUp },
-  ];
-
-  const hasActiveFilters = searchQuery || selectedCountry !== 'all' || selectedVoucher !== 'all';
+  const hasActiveFilters = searchQuery || selectedCountry !== 'all' || selectedServiceCategory !== 'all' || selectedVoucher !== 'all';
 
   const clearFilters = () => {
     onSearchChange('');
     onCountryChange('all');
+    onServiceCategoryChange('all');
     onVoucherChange('all');
   };
 
@@ -70,7 +83,33 @@ export function SearchFilters({
           )}
         </div>
 
-        {/* Filters row */}
+        {/* Service Category Filters - PRIMARY */}
+        <div className="mb-4">
+          <div className="text-xs font-medium text-muted-foreground mb-2">Filter by Service Type</div>
+          <div className="flex flex-wrap gap-2">
+            {serviceCategories.map(cat => {
+              const isSelected = selectedServiceCategory === cat.value;
+              return (
+                <Button
+                  key={cat.value}
+                  variant={isSelected ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onServiceCategoryChange(cat.value)}
+                  className={cn(
+                    'transition-all',
+                    !isSelected && cat.color,
+                    isSelected && 'shadow-md'
+                  )}
+                >
+                  {cat.icon && <cat.icon className="w-4 h-4 mr-1.5" />}
+                  {cat.label}
+                </Button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Secondary filters row */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
           <div className="flex flex-wrap gap-3">
             {/* Country filter */}
@@ -88,27 +127,22 @@ export function SearchFilters({
               </SelectContent>
             </Select>
 
-            {/* Voucher type filter */}
-            <div className="flex gap-2">
-              {voucherTypes.map(voucher => (
-                <Button
-                  key={voucher.value}
-                  variant={selectedVoucher === voucher.value ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => onVoucherChange(voucher.value)}
-                  className={cn(
-                    'transition-all',
-                    selectedVoucher === voucher.value && 'shadow-md'
-                  )}
-                >
-                  {voucher.icon && <voucher.icon className="w-4 h-4 mr-1.5" />}
-                  <span className="hidden sm:inline">{voucher.label}</span>
-                  <span className="sm:hidden">
-                    {voucher.value === 'all' ? 'All' : voucher.label.split(' ')[0]}
-                  </span>
-                </Button>
-              ))}
-            </div>
+            {/* Voucher type filter - secondary dropdown */}
+            <Select value={selectedVoucher} onValueChange={onVoucherChange}>
+              <SelectTrigger className="w-[200px] bg-card">
+                <SelectValue placeholder="All Vouchers" />
+              </SelectTrigger>
+              <SelectContent>
+                {voucherTypes.map(voucher => (
+                  <SelectItem key={voucher.value} value={voucher.value}>
+                    <span className="flex items-center gap-2">
+                      {voucher.icon && <voucher.icon className="w-4 h-4" />}
+                      {voucher.label}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Results count & clear */}

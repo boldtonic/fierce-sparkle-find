@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Provider, parseCSV, getUniqueCountries } from '@/lib/parseCSV';
+import { Provider, ServiceCategory, parseCSV, getUniqueCountries, hasServiceCategory } from '@/lib/parseCSV';
 
 export function useProviders() {
   const [providers, setProviders] = useState<Provider[]>([]);
@@ -9,6 +9,7 @@ export function useProviders() {
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('all');
+  const [selectedServiceCategory, setSelectedServiceCategory] = useState<ServiceCategory | 'all'>('all');
   const [selectedVoucher, setSelectedVoucher] = useState('all');
 
   useEffect(() => {
@@ -19,22 +20,6 @@ export function useProviders() {
         const text = await response.text();
         const parsed = parseCSV(text);
         setProviders(parsed);
-
-        // Temporary debug (DEV only)
-        if (import.meta.env.DEV) {
-          const sample = parsed.slice(0, 3).map((p) => ({
-            name: p.name,
-            country: p.country,
-            ideation: p.ideation.length,
-            scaleup: p.scaleup.length,
-            commercialisation: p.commercialisation.length,
-          }));
-          // eslint-disable-next-line no-console
-          console.debug('[providers] parsed', {
-            count: parsed.length,
-            sample,
-          });
-        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load data');
       } finally {
@@ -51,14 +36,19 @@ export function useProviders() {
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
+        const allServiceNames = [
+          ...provider.services.technical,
+          ...provider.services.business,
+          ...provider.services.social,
+          ...provider.services.funding,
+        ].map(s => s.name).join(' ');
+        
         const searchFields = [
           provider.name,
           provider.country,
           provider.coverage,
           provider.description,
-          ...provider.ideation,
-          ...provider.scaleup,
-          ...provider.commercialisation,
+          allServiceNames,
         ].join(' ').toLowerCase();
         
         if (!searchFields.includes(query)) return false;
@@ -69,16 +59,19 @@ export function useProviders() {
         return false;
       }
       
-      // Voucher type filter
+      // Service category filter (PRIMARY FILTER)
+      if (selectedServiceCategory !== 'all') {
+        if (!hasServiceCategory(provider, selectedServiceCategory)) return false;
+      }
+      
+      // Voucher type filter (secondary)
       if (selectedVoucher !== 'all') {
-        if (selectedVoucher === 'ideation' && provider.ideation.length === 0) return false;
-        if (selectedVoucher === 'scaleup' && provider.scaleup.length === 0) return false;
-        if (selectedVoucher === 'commercialisation' && provider.commercialisation.length === 0) return false;
+        if (!provider.voucherTypes.includes(selectedVoucher as any)) return false;
       }
       
       return true;
     });
-  }, [providers, searchQuery, selectedCountry, selectedVoucher]);
+  }, [providers, searchQuery, selectedCountry, selectedServiceCategory, selectedVoucher]);
 
   return {
     providers: filteredProviders,
@@ -90,6 +83,8 @@ export function useProviders() {
     setSearchQuery,
     selectedCountry,
     setSelectedCountry,
+    selectedServiceCategory,
+    setSelectedServiceCategory,
     selectedVoucher,
     setSelectedVoucher,
   };
