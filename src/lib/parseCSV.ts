@@ -204,6 +204,14 @@ export function getUniqueCountries(providers: Provider[]): string[] {
   return Array.from(countries).sort();
 }
 
+export function getUniqueCoverages(providers: Provider[]): string[] {
+  const coverages = new Set<string>();
+  providers.forEach(p => {
+    if (p.coverage) coverages.add(p.coverage);
+  });
+  return Array.from(coverages).sort();
+}
+
 export function hasServiceCategory(provider: Provider, category: ServiceCategory): boolean {
   return provider.services[category].length > 0;
 }
@@ -215,4 +223,13 @@ export function getAllServiceCategories(provider: Provider): ServiceCategory[] {
   if (provider.services.social.length > 0) categories.push('social');
   if (provider.services.funding.length > 0) categories.push('funding');
   return categories;
+}
+
+export type CoverageType = 'local' | 'eu' | 'global';
+
+export function getCoverageType(coverage: string): CoverageType {
+  const lower = coverage.toLowerCase();
+  if (lower.includes('global') || lower.includes('worldwide') || lower.includes('international')) return 'global';
+  if (lower.includes('eu') || lower.includes('europe')) return 'eu';
+  return 'local';
 }

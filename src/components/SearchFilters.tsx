@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, X, Wrench, Briefcase, Leaf, Coins, Plus, MapPin, Ticket } from 'lucide-react';
+import { Search, X, Wrench, Briefcase, Leaf, Coins, Plus, MapPin, Ticket, Globe2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,11 +23,14 @@ interface SearchFiltersProps {
   onSearchChange: (query: string) => void;
   selectedCountry: string;
   onCountryChange: (country: string) => void;
+  selectedCoverage: string;
+  onCoverageChange: (coverage: string) => void;
   selectedServiceCategory: ServiceCategory | 'all';
   onServiceCategoryChange: (category: ServiceCategory | 'all') => void;
   selectedVoucher: string;
   onVoucherChange: (voucher: string) => void;
   countries: string[];
+  coverages: string[];
   totalResults: number;
 }
 
@@ -50,16 +53,19 @@ export function SearchFilters({
   onSearchChange,
   selectedCountry,
   onCountryChange,
+  selectedCoverage,
+  onCoverageChange,
   selectedServiceCategory,
   onServiceCategoryChange,
   selectedVoucher,
   onVoucherChange,
   countries,
+  coverages,
   totalResults,
 }: SearchFiltersProps) {
   const [addFilterOpen, setAddFilterOpen] = useState(false);
 
-  const hasActiveSecondaryFilters = selectedCountry !== 'all' || selectedVoucher !== 'all';
+  const hasActiveSecondaryFilters = selectedCountry !== 'all' || selectedCoverage !== 'all' || selectedVoucher !== 'all';
 
   return (
     <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b border-border/50 py-3">
@@ -93,6 +99,14 @@ export function SearchFilters({
               value={selectedCountry}
               onRemove={() => onCountryChange('all')}
               variant="country"
+            />
+          )}
+          {selectedCoverage !== 'all' && (
+            <FilterChip
+              label="Coverage"
+              value={selectedCoverage}
+              onRemove={() => onCoverageChange('all')}
+              variant="coverage"
             />
           )}
           {selectedVoucher !== 'all' && (
@@ -142,7 +156,7 @@ export function SearchFilters({
                 <div>
                   <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
                     <MapPin className="w-3.5 h-3.5" />
-                    Country
+                    Country (HQ)
                   </label>
                   <Select 
                     value={selectedCountry} 
@@ -159,6 +173,33 @@ export function SearchFilters({
                       {countries.map(country => (
                         <SelectItem key={country} value={country}>
                           {country}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Coverage filter */}
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
+                    <Globe2 className="w-3.5 h-3.5" />
+                    Geographical Coverage
+                  </label>
+                  <Select 
+                    value={selectedCoverage} 
+                    onValueChange={(val) => {
+                      onCoverageChange(val);
+                      if (val !== 'all') setAddFilterOpen(false);
+                    }}
+                  >
+                    <SelectTrigger className="h-8 text-xs bg-background">
+                      <SelectValue placeholder="Select coverage" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Coverage</SelectItem>
+                      {coverages.map(coverage => (
+                        <SelectItem key={coverage} value={coverage}>
+                          {coverage}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -196,6 +237,7 @@ export function SearchFilters({
                     size="sm"
                     onClick={() => {
                       onCountryChange('all');
+                      onCoverageChange('all');
                       onVoucherChange('all');
                       setAddFilterOpen(false);
                     }}
