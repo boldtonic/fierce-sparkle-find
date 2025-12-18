@@ -18,12 +18,6 @@ const Index = () => {
     setSelectedVoucher,
   } = useProviders();
 
-  const clearFilters = () => {
-    setSearchQuery('');
-    setSelectedCountry('all');
-    setSelectedVoucher('all');
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
@@ -39,29 +33,27 @@ const Index = () => {
         totalResults={providers.length}
       />
       
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-8">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
-            <p className="text-sm text-muted-foreground">Loading providers...</p>
+            <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
+            <p className="text-muted-foreground">Loading providers...</p>
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-destructive font-medium mb-1">Error loading data</p>
-            <p className="text-sm text-muted-foreground">{error}</p>
+            <p className="text-destructive font-medium mb-2">Error loading data</p>
+            <p className="text-muted-foreground">{error}</p>
           </div>
         ) : (
-          <ProviderGrid providers={providers} onClearFilters={clearFilters} />
+          <ProviderGrid providers={providers} />
         )}
       </main>
       
       {/* Footer */}
-      <footer className="border-t border-border py-8 mt-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="font-display font-semibold text-foreground mb-1">FIERCE Programme</p>
-          <p className="text-sm text-muted-foreground">
-            External Service Provider Catalogue for SMEs
-          </p>
+      <footer className="border-t border-border/50 py-8 mt-12">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+          <p className="font-display font-semibold text-foreground mb-2">FIERCE Programme</p>
+          <p>External Service Provider Catalogue for SMEs</p>
         </div>
       </footer>
     </div>
