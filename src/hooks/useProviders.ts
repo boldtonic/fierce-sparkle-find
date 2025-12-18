@@ -19,6 +19,22 @@ export function useProviders() {
         const text = await response.text();
         const parsed = parseCSV(text);
         setProviders(parsed);
+
+        // Temporary debug (DEV only)
+        if (import.meta.env.DEV) {
+          const sample = parsed.slice(0, 3).map((p) => ({
+            name: p.name,
+            country: p.country,
+            ideation: p.ideation.length,
+            scaleup: p.scaleup.length,
+            commercialisation: p.commercialisation.length,
+          }));
+          // eslint-disable-next-line no-console
+          console.debug('[providers] parsed', {
+            count: parsed.length,
+            sample,
+          });
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load data');
       } finally {
