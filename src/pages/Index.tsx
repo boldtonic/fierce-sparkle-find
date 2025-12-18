@@ -14,6 +14,8 @@ const Index = () => {
     setSearchQuery,
     selectedCountry,
     setSelectedCountry,
+    selectedServiceCategory,
+    setSelectedServiceCategory,
     selectedVoucher,
     setSelectedVoucher,
   } = useProviders();
@@ -27,6 +29,8 @@ const Index = () => {
         onSearchChange={setSearchQuery}
         selectedCountry={selectedCountry}
         onCountryChange={setSelectedCountry}
+        selectedServiceCategory={selectedServiceCategory}
+        onServiceCategoryChange={setSelectedServiceCategory}
         selectedVoucher={selectedVoucher}
         onVoucherChange={setSelectedVoucher}
         countries={countries}
