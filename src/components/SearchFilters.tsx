@@ -1,6 +1,12 @@
-import { Search, X, Wrench, Briefcase, Leaf, Coins, Lightbulb, Rocket, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+import { Search, X, Wrench, Briefcase, Leaf, Coins, Plus, MapPin, Ticket } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -10,6 +16,7 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { ServiceCategory } from '@/lib/parseCSV';
+import { FilterChip } from './FilterChip';
 
 interface SearchFiltersProps {
   searchQuery: string;
@@ -25,19 +32,18 @@ interface SearchFiltersProps {
 }
 
 const serviceCategories = [
-  { value: 'all' as const, label: 'All Services', icon: null, color: '' },
+  { value: 'all' as const, label: 'All', icon: null, color: '' },
   { value: 'technical' as const, label: 'Technical', icon: Wrench, color: 'bg-tag-technical/10 text-tag-technical border-tag-technical/30 hover:bg-tag-technical/20' },
   { value: 'business' as const, label: 'Business', icon: Briefcase, color: 'bg-tag-business/10 text-tag-business border-tag-business/30 hover:bg-tag-business/20' },
-  { value: 'social' as const, label: 'Social/Environmental', icon: Leaf, color: 'bg-tag-social/10 text-tag-social border-tag-social/30 hover:bg-tag-social/20' },
+  { value: 'social' as const, label: 'Social', icon: Leaf, color: 'bg-tag-social/10 text-tag-social border-tag-social/30 hover:bg-tag-social/20' },
   { value: 'funding' as const, label: 'Funding', icon: Coins, color: 'bg-tag-funding/10 text-tag-funding border-tag-funding/30 hover:bg-tag-funding/20' },
 ];
 
-const voucherTypes = [
-  { value: 'all', label: 'All Vouchers', icon: null },
-  { value: 'ideation', label: 'Ideation €25K', icon: Lightbulb },
-  { value: 'scaleup', label: 'Scale-up €50K', icon: Rocket },
-  { value: 'commercialisation', label: 'Commercialisation €25K', icon: TrendingUp },
-];
+const voucherLabels: Record<string, string> = {
+  ideation: 'Ideation €25K',
+  scaleup: 'Scale-up €50K',
+  commercialisation: 'Commercialisation €25K',
+};
 
 export function SearchFilters({
   searchQuery,
@@ -51,116 +57,160 @@ export function SearchFilters({
   countries,
   totalResults,
 }: SearchFiltersProps) {
-  const hasActiveFilters = searchQuery || selectedCountry !== 'all' || selectedServiceCategory !== 'all' || selectedVoucher !== 'all';
+  const [addFilterOpen, setAddFilterOpen] = useState(false);
 
-  const clearFilters = () => {
-    onSearchChange('');
-    onCountryChange('all');
-    onServiceCategoryChange('all');
-    onVoucherChange('all');
-  };
+  const hasActiveSecondaryFilters = selectedCountry !== 'all' || selectedVoucher !== 'all';
 
   return (
-    <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b border-border/50 py-4">
+    <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b border-border/50 py-3">
       <div className="container mx-auto px-4">
-        {/* Search bar */}
-        <div className="relative mb-4">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search providers by name, country, or services..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-12 pr-12 py-6 text-base bg-card border-border/50 shadow-card focus:shadow-card-hover transition-shadow"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => onSearchChange('')}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-muted transition-colors"
-            >
-              <X className="w-4 h-4 text-muted-foreground" />
-            </button>
-          )}
-        </div>
+        {/* Single row filter bar */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Search input */}
+          <div className="relative flex-1 min-w-[200px] max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search providers..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="pl-9 pr-8 h-9 text-sm bg-card border-border/50"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => onSearchChange('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-muted transition-colors"
+              >
+                <X className="w-3.5 h-3.5 text-muted-foreground" />
+              </button>
+            )}
+          </div>
 
-        {/* Service Category Filters - PRIMARY */}
-        <div className="mb-4">
-          <div className="text-xs font-medium text-muted-foreground mb-2">Filter by Service Type</div>
-          <div className="flex flex-wrap gap-2">
+          {/* Active filter chips */}
+          {selectedCountry !== 'all' && (
+            <FilterChip
+              label="Country"
+              value={selectedCountry}
+              onRemove={() => onCountryChange('all')}
+              variant="country"
+            />
+          )}
+          {selectedVoucher !== 'all' && (
+            <FilterChip
+              label="Voucher"
+              value={voucherLabels[selectedVoucher] || selectedVoucher}
+              onRemove={() => onVoucherChange('all')}
+              variant="voucher"
+            />
+          )}
+
+          {/* Service category pills */}
+          <div className="flex items-center gap-1.5 border-l border-border/50 pl-3">
             {serviceCategories.map(cat => {
               const isSelected = selectedServiceCategory === cat.value;
               return (
                 <Button
                   key={cat.value}
-                  variant={isSelected ? 'default' : 'outline'}
+                  variant={isSelected ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => onServiceCategoryChange(cat.value)}
                   className={cn(
-                    'transition-all',
+                    'h-8 px-3 text-xs transition-all',
                     !isSelected && cat.color,
-                    isSelected && 'shadow-md'
+                    !isSelected && !cat.color && 'hover:bg-muted',
+                    isSelected && 'shadow-sm'
                   )}
                 >
-                  {cat.icon && <cat.icon className="w-4 h-4 mr-1.5" />}
+                  {cat.icon && <cat.icon className="w-3.5 h-3.5 mr-1" />}
                   {cat.label}
                 </Button>
               );
             })}
           </div>
-        </div>
 
-        {/* Secondary filters row */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="flex flex-wrap gap-3">
-            {/* Country filter */}
-            <Select value={selectedCountry} onValueChange={onCountryChange}>
-              <SelectTrigger className="w-[180px] bg-card">
-                <SelectValue placeholder="All Countries" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Countries</SelectItem>
-                {countries.map(country => (
-                  <SelectItem key={country} value={country}>
-                    {country}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Voucher type filter - secondary dropdown */}
-            <Select value={selectedVoucher} onValueChange={onVoucherChange}>
-              <SelectTrigger className="w-[200px] bg-card">
-                <SelectValue placeholder="All Vouchers" />
-              </SelectTrigger>
-              <SelectContent>
-                {voucherTypes.map(voucher => (
-                  <SelectItem key={voucher.value} value={voucher.value}>
-                    <span className="flex items-center gap-2">
-                      {voucher.icon && <voucher.icon className="w-4 h-4" />}
-                      {voucher.label}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Results count & clear */}
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">{totalResults}</span> provider{totalResults !== 1 ? 's' : ''} found
-            </span>
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-4 h-4 mr-1" />
-                Clear
+          {/* Add filter button */}
+          <Popover open={addFilterOpen} onOpenChange={setAddFilterOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8 px-3 text-xs gap-1.5">
+                <Plus className="w-3.5 h-3.5" />
+                Add filter
               </Button>
-            )}
+            </PopoverTrigger>
+            <PopoverContent className="w-64 p-3 bg-card" align="start">
+              <div className="space-y-3">
+                {/* Country filter */}
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
+                    <MapPin className="w-3.5 h-3.5" />
+                    Country
+                  </label>
+                  <Select 
+                    value={selectedCountry} 
+                    onValueChange={(val) => {
+                      onCountryChange(val);
+                      if (val !== 'all') setAddFilterOpen(false);
+                    }}
+                  >
+                    <SelectTrigger className="h-8 text-xs bg-background">
+                      <SelectValue placeholder="Select country" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Countries</SelectItem>
+                      {countries.map(country => (
+                        <SelectItem key={country} value={country}>
+                          {country}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Voucher type filter */}
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
+                    <Ticket className="w-3.5 h-3.5" />
+                    Voucher Type
+                  </label>
+                  <Select 
+                    value={selectedVoucher} 
+                    onValueChange={(val) => {
+                      onVoucherChange(val);
+                      if (val !== 'all') setAddFilterOpen(false);
+                    }}
+                  >
+                    <SelectTrigger className="h-8 text-xs bg-background">
+                      <SelectValue placeholder="Select voucher" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Vouchers</SelectItem>
+                      <SelectItem value="ideation">Ideation €25K</SelectItem>
+                      <SelectItem value="scaleup">Scale-up €50K</SelectItem>
+                      <SelectItem value="commercialisation">Commercialisation €25K</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {hasActiveSecondaryFilters && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      onCountryChange('all');
+                      onVoucherChange('all');
+                      setAddFilterOpen(false);
+                    }}
+                    className="w-full h-7 text-xs text-muted-foreground"
+                  >
+                    Clear all filters
+                  </Button>
+                )}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          {/* Results count */}
+          <div className="ml-auto text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">{totalResults}</span> provider{totalResults !== 1 ? 's' : ''}
           </div>
         </div>
       </div>
