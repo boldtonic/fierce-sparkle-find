@@ -1,7 +1,6 @@
-import { Search, X, Filter, Lightbulb, Rocket, TrendingUp } from 'lucide-react';
+import { Search, X, Lightbulb, Rocket, TrendingUp, LayoutGrid } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -22,6 +21,13 @@ interface SearchFiltersProps {
   totalResults: number;
 }
 
+const voucherTypes = [
+  { value: 'all', label: 'All Types', icon: LayoutGrid, color: '' },
+  { value: 'ideation', label: 'Ideation', icon: Lightbulb, color: 'text-ideation' },
+  { value: 'scaleup', label: 'Scale-up', icon: Rocket, color: 'text-scaleup' },
+  { value: 'commercialisation', label: 'Commercialisation', icon: TrendingUp, color: 'text-commercialisation' },
+];
+
 export function SearchFilters({
   searchQuery,
   onSearchChange,
@@ -32,13 +38,6 @@ export function SearchFilters({
   countries,
   totalResults,
 }: SearchFiltersProps) {
-  const voucherTypes = [
-    { value: 'all', label: 'All Vouchers', icon: null },
-    { value: 'ideation', label: 'Ideation (€25K)', icon: Lightbulb },
-    { value: 'scaleup', label: 'Scale-up (€50K)', icon: Rocket },
-    { value: 'commercialisation', label: 'Commercialisation (€25K)', icon: TrendingUp },
-  ];
-
   const hasActiveFilters = searchQuery || selectedCountry !== 'all' || selectedVoucher !== 'all';
 
   const clearFilters = () => {
@@ -48,22 +47,23 @@ export function SearchFilters({
   };
 
   return (
-    <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b border-border/50 py-4">
-      <div className="container mx-auto px-4">
+    <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-md border-b border-border">
+      <div className="container mx-auto px-4 py-4">
         {/* Search bar */}
         <div className="relative mb-4">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="Search providers by name, country, or services..."
+            placeholder="Search by name, country, or service..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-12 pr-12 py-6 text-base bg-card border-border/50 shadow-card focus:shadow-card-hover transition-shadow"
+            className="pl-12 pr-12 h-12 text-base bg-card border-border shadow-sm focus:shadow-md focus:border-primary transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-muted transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-secondary transition-colors"
+              aria-label="Clear search"
             >
               <X className="w-4 h-4 text-muted-foreground" />
             </button>
@@ -72,10 +72,10 @@ export function SearchFilters({
 
         {/* Filters row */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             {/* Country filter */}
             <Select value={selectedCountry} onValueChange={onCountryChange}>
-              <SelectTrigger className="w-[180px] bg-card">
+              <SelectTrigger className="w-full sm:w-[160px] h-10 bg-card">
                 <SelectValue placeholder="All Countries" />
               </SelectTrigger>
               <SelectContent>
@@ -88,42 +88,44 @@ export function SearchFilters({
               </SelectContent>
             </Select>
 
-            {/* Voucher type filter */}
-            <div className="flex gap-2">
-              {voucherTypes.map(voucher => (
-                <Button
-                  key={voucher.value}
-                  variant={selectedVoucher === voucher.value ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => onVoucherChange(voucher.value)}
-                  className={cn(
-                    'transition-all',
-                    selectedVoucher === voucher.value && 'shadow-md'
-                  )}
-                >
-                  {voucher.icon && <voucher.icon className="w-4 h-4 mr-1.5" />}
-                  <span className="hidden sm:inline">{voucher.label}</span>
-                  <span className="sm:hidden">
-                    {voucher.value === 'all' ? 'All' : voucher.label.split(' ')[0]}
-                  </span>
-                </Button>
-              ))}
+            {/* Voucher type pills */}
+            <div className="flex flex-wrap gap-1.5">
+              {voucherTypes.map(voucher => {
+                const isSelected = selectedVoucher === voucher.value;
+                const Icon = voucher.icon;
+                return (
+                  <button
+                    key={voucher.value}
+                    onClick={() => onVoucherChange(voucher.value)}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all',
+                      isSelected 
+                        ? 'bg-primary text-primary-foreground shadow-sm' 
+                        : 'bg-card border border-border hover:bg-secondary text-foreground'
+                    )}
+                  >
+                    <Icon className={cn('w-4 h-4', !isSelected && voucher.color)} />
+                    <span className="hidden sm:inline">{voucher.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Results count & clear */}
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">{totalResults}</span> provider{totalResults !== 1 ? 's' : ''} found
+          <div className="flex items-center gap-3 text-sm">
+            <span className="text-muted-foreground">
+              <span className="font-semibold text-foreground">{totalResults}</span> 
+              {' '}provider{totalResults !== 1 ? 's' : ''}
             </span>
             {hasActiveFilters && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={clearFilters}
-                className="text-muted-foreground hover:text-foreground"
+                className="h-8 px-2 text-muted-foreground hover:text-foreground"
               >
-                <X className="w-4 h-4 mr-1" />
+                <X className="w-3.5 h-3.5 mr-1" />
                 Clear
               </Button>
             )}
