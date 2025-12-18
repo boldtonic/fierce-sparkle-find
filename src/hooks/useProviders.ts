@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Provider, ServiceCategory, parseCSV, getUniqueCountries, hasServiceCategory } from '@/lib/parseCSV';
+import { Provider, ServiceCategory, parseCSV, getUniqueCountries, getUniqueCoverages, hasServiceCategory } from '@/lib/parseCSV';
 
 export function useProviders() {
   const [providers, setProviders] = useState<Provider[]>([]);
@@ -9,6 +9,7 @@ export function useProviders() {
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('all');
+  const [selectedCoverage, setSelectedCoverage] = useState('all');
   const [selectedServiceCategory, setSelectedServiceCategory] = useState<ServiceCategory | 'all'>('all');
   const [selectedVoucher, setSelectedVoucher] = useState('all');
 
@@ -30,6 +31,7 @@ export function useProviders() {
   }, []);
 
   const countries = useMemo(() => getUniqueCountries(providers), [providers]);
+  const coverages = useMemo(() => getUniqueCoverages(providers), [providers]);
 
   const filteredProviders = useMemo(() => {
     return providers.filter(provider => {
@@ -58,6 +60,11 @@ export function useProviders() {
       if (selectedCountry !== 'all' && provider.country !== selectedCountry) {
         return false;
       }
+
+      // Coverage filter
+      if (selectedCoverage !== 'all' && provider.coverage !== selectedCoverage) {
+        return false;
+      }
       
       // Service category filter (PRIMARY FILTER)
       if (selectedServiceCategory !== 'all') {
@@ -71,7 +78,7 @@ export function useProviders() {
       
       return true;
     });
-  }, [providers, searchQuery, selectedCountry, selectedServiceCategory, selectedVoucher]);
+  }, [providers, searchQuery, selectedCountry, selectedCoverage, selectedServiceCategory, selectedVoucher]);
 
   return {
     providers: filteredProviders,
@@ -79,10 +86,13 @@ export function useProviders() {
     loading,
     error,
     countries,
+    coverages,
     searchQuery,
     setSearchQuery,
     selectedCountry,
     setSelectedCountry,
+    selectedCoverage,
+    setSelectedCoverage,
     selectedServiceCategory,
     setSelectedServiceCategory,
     selectedVoucher,

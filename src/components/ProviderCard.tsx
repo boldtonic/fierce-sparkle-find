@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { Provider, ServiceCategory, getAllServiceCategories } from '@/lib/parseCSV';
+import { Provider, ServiceCategory, getAllServiceCategories, getCoverageType } from '@/lib/parseCSV';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
-  Globe, 
   MapPin, 
   ChevronDown, 
   ChevronUp, 
@@ -15,16 +14,20 @@ import {
   Coins,
   Lightbulb,
   Rocket,
-  TrendingUp
+  TrendingUp,
+  Globe2,
+  Building2,
+  Earth
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { LucideIcon } from 'lucide-react';
 
 interface ProviderCardProps {
   provider: Provider;
   index: number;
 }
 
-const categoryConfig: Record<ServiceCategory, { label: string; icon: typeof Wrench; colorClass: string }> = {
+const categoryConfig: Record<ServiceCategory, { label: string; icon: LucideIcon; colorClass: string }> = {
   technical: { label: 'Technical', icon: Wrench, colorClass: 'bg-tag-technical/15 text-tag-technical border-tag-technical/30' },
   business: { label: 'Business', icon: Briefcase, colorClass: 'bg-tag-business/15 text-tag-business border-tag-business/30' },
   social: { label: 'Social/Environmental', icon: Leaf, colorClass: 'bg-tag-social/15 text-tag-social border-tag-social/30' },
@@ -37,12 +40,22 @@ const voucherConfig = {
   commercialisation: { label: 'Commercialisation', icon: TrendingUp, amount: '€25K' },
 };
 
+const coverageIcons: Record<string, { icon: LucideIcon; color: string }> = {
+  local: { icon: Building2, color: 'text-amber-500' },
+  eu: { icon: Globe2, color: 'text-blue-500' },
+  global: { icon: Earth, color: 'text-emerald-500' },
+};
+
 export function ProviderCard({ provider, index }: ProviderCardProps) {
   const [expanded, setExpanded] = useState(false);
   
   const serviceCategories = getAllServiceCategories(provider);
   const hasServices = serviceCategories.length > 0;
   const hasVouchers = provider.voucherTypes.length > 0;
+  
+  const coverageType = getCoverageType(provider.coverage);
+  const CoverageIcon = coverageIcons[coverageType]?.icon || Globe2;
+  const coverageColor = coverageIcons[coverageType]?.color || 'text-muted-foreground';
 
   // Calculate animation delay class
   const delayClass = `animate-fade-in [animation-delay:${index * 50}ms] [animation-fill-mode:backwards]`;
@@ -74,9 +87,9 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
                 </span>
               )}
               {provider.coverage && (
-                <span className="flex items-center gap-1.5">
-                  <Globe className="w-3.5 h-3.5" />
-                  {provider.coverage}
+                <span className={cn('flex items-center gap-1.5', coverageColor)}>
+                  <CoverageIcon className="w-3.5 h-3.5" />
+                  <span className="text-muted-foreground">{provider.coverage}</span>
                 </span>
               )}
             </div>

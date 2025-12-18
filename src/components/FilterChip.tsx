@@ -5,7 +5,7 @@ interface FilterChipProps {
   label: string;
   value: string;
   onRemove: () => void;
-  variant?: 'country' | 'voucher';
+  variant?: 'country' | 'coverage' | 'voucher';
 }
 
 export function FilterChip({ label, value, onRemove, variant = 'country' }: FilterChipProps) {
@@ -14,6 +14,7 @@ export function FilterChip({ label, value, onRemove, variant = 'country' }: Filt
       className={cn(
         'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-all',
         variant === 'country' && 'bg-primary/10 text-primary border-primary/20',
+        variant === 'coverage' && 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
         variant === 'voucher' && 'bg-accent/10 text-accent-foreground border-accent/20'
       )}
     >

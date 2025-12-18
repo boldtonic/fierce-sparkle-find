@@ -10,10 +10,13 @@ const Index = () => {
     loading,
     error,
     countries,
+    coverages,
     searchQuery,
     setSearchQuery,
     selectedCountry,
     setSelectedCountry,
+    selectedCoverage,
+    setSelectedCoverage,
     selectedServiceCategory,
     setSelectedServiceCategory,
     selectedVoucher,
@@ -29,11 +32,14 @@ const Index = () => {
         onSearchChange={setSearchQuery}
         selectedCountry={selectedCountry}
         onCountryChange={setSelectedCountry}
+        selectedCoverage={selectedCoverage}
+        onCoverageChange={setSelectedCoverage}
         selectedServiceCategory={selectedServiceCategory}
         onServiceCategoryChange={setSelectedServiceCategory}
         selectedVoucher={selectedVoucher}
         onVoucherChange={setSelectedVoucher}
         countries={countries}
+        coverages={coverages}
         totalResults={providers.length}
       />
       
