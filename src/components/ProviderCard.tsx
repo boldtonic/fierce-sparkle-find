@@ -158,17 +158,30 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
             </p>
           )}
           
-          {/* View details button */}
-          <DialogTrigger asChild>
+          {/* Action buttons */}
+          <div className="flex gap-2 mt-3">
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1 text-muted-foreground hover:text-foreground hover:bg-primary/10"
+              >
+                <Eye className="w-4 h-4 mr-1.5" />
+                View details
+              </Button>
+            </DialogTrigger>
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
-              className="w-full mt-3 text-muted-foreground hover:text-foreground hover:bg-primary/10"
+              className="flex-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(`mailto:?subject=Quotation Request - ${provider.name}&body=Hello,%0D%0A%0D%0AI would like to request a quotation for your services.%0D%0A%0D%0AThank you.`, '_blank');
+              }}
             >
-              <Eye className="w-4 h-4 mr-1.5" />
-              View details
+              Ask for quotation
             </Button>
-          </DialogTrigger>
+          </div>
         </CardContent>
       </Card>
       
