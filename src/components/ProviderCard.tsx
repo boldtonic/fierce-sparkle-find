@@ -148,17 +148,6 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
               </div>
             </div>
             
-            {provider.website && (
-              <a 
-                href={provider.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex-shrink-0 p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            )}
           </div>
           
           {/* Service Category Badges */}
@@ -222,6 +211,20 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
                 View details
               </Button>
             </DialogTrigger>
+            {provider.website && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1 text-muted-foreground hover:text-foreground hover:bg-primary/10"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(provider.website, '_blank');
+                }}
+              >
+                <ExternalLink className="w-4 h-4 mr-1.5" />
+                Website
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
