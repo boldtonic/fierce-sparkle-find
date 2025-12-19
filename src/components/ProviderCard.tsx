@@ -163,9 +163,9 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
           <div className="flex gap-2 mt-3">
             <DialogTrigger asChild>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="flex-1 text-muted-foreground hover:text-foreground hover:bg-primary/10"
+                className="flex-1"
               >
                 <Eye className="w-4 h-4 mr-1.5" />
                 View details
@@ -173,7 +173,7 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
             </DialogTrigger>
             {provider.contactEmail && (
               <Button
-                variant="outline"
+                variant="default"
                 size="sm"
                 className="flex-1"
                 asChild
