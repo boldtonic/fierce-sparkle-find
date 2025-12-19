@@ -56,14 +56,14 @@ export function ProviderDetailModal({ provider }: ProviderDetailModalProps) {
   const CoverageIcon = coverage.icon;
 
   return (
-    <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col bg-gradient-card">
-      <DialogHeader className="pb-4 border-b border-border/50">
+    <DialogContent className="max-w-4xl max-h-[85vh] overflow-hidden flex flex-col bg-gradient-card">
+      <DialogHeader className="pb-3 border-b border-border/50">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <DialogTitle className="font-display text-2xl font-bold text-foreground">
               {provider.name}
             </DialogTitle>
-            <div className="flex flex-wrap items-center gap-4 mt-3">
+            <div className="flex flex-wrap items-center gap-4 mt-2">
               {provider.country && (
                 <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <MapPin className="w-4 h-4" />
@@ -97,89 +97,89 @@ export function ProviderDetailModal({ provider }: ProviderDetailModalProps) {
         </div>
       </DialogHeader>
       
-      <div className="flex-1 overflow-y-auto py-4 space-y-6">
+      <div className="flex-1 overflow-y-auto py-3 space-y-4">
         {/* Description */}
         {provider.description && (
           <section>
             <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
               About
             </h4>
-            <p className="text-foreground leading-relaxed">
+            <p className="text-foreground leading-relaxed text-sm">
               {provider.description}
             </p>
           </section>
         )}
 
-        {/* Services by Category */}
-        {hasServices && (
-          <section>
-            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-              Services Offered
-            </h4>
-            <div className="space-y-4">
-              {serviceCategories.map(cat => {
-                const config = categoryConfig[cat];
-                const services = provider.services[cat];
-                const IconComponent = config.icon;
-                return (
-                  <div key={cat} className="p-4 rounded-lg bg-secondary/50 border border-border/30">
-                    <div className="flex items-center gap-2 mb-3">
-                      <IconComponent className={cn('w-5 h-5', `text-tag-${cat}`)} />
-                      <span className="font-semibold text-foreground">{config.label}</span>
-                      <Badge variant="secondary" className="text-xs ml-auto">
-                        {services.length} services
-                      </Badge>
+        {/* Services and Vouchers side-by-side */}
+        <div className="flex gap-6">
+          {/* Services by Category - 2x2 grid */}
+          {hasServices && (
+            <section className="flex-1">
+              <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                Services Offered
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                {serviceCategories.map(cat => {
+                  const config = categoryConfig[cat];
+                  const services = provider.services[cat];
+                  const IconComponent = config.icon;
+                  return (
+                    <div key={cat} className="p-3 rounded-lg bg-secondary/50 border border-border/30">
+                      <div className="flex items-center gap-2 mb-2">
+                        <IconComponent className={cn('w-4 h-4', `text-tag-${cat}`)} />
+                        <span className="font-semibold text-foreground text-sm">{config.label}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {services.map((service, i) => (
+                          <Badge 
+                            key={i} 
+                            variant="outline" 
+                            className={cn('text-xs py-0.5 px-2', config.colorClass)}
+                          >
+                            {service.name}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {services.map((service, i) => (
-                        <Badge 
-                          key={i} 
-                          variant="outline" 
-                          className={cn('text-sm py-1 px-3', config.colorClass)}
-                        >
-                          {service.name}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
-        {/* Voucher Types */}
-        {hasVouchers && (
-          <section>
-            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-              Supported Voucher Types
-            </h4>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {provider.voucherTypes.map(type => {
-                const config = voucherConfig[type];
-                const IconComponent = config.icon;
-                return (
-                  <div 
-                    key={type}
-                    className="flex items-start gap-3 p-3 rounded-lg bg-primary/5 border border-primary/20"
-                  >
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <IconComponent className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-foreground">
-                        {config.label}
+          {/* Voucher Types - vertical stack on right */}
+          {hasVouchers && (
+            <section className="w-56 shrink-0">
+              <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                Voucher Types
+              </h4>
+              <div className="space-y-2">
+                {provider.voucherTypes.map(type => {
+                  const config = voucherConfig[type];
+                  const IconComponent = config.icon;
+                  return (
+                    <div 
+                      key={type}
+                      className="flex items-center gap-3 p-2.5 rounded-lg bg-primary/5 border border-primary/20"
+                    >
+                      <div className="p-1.5 rounded-md bg-primary/10">
+                        <IconComponent className="w-4 h-4 text-primary" />
                       </div>
-                      <div className="text-sm text-primary font-medium">
-                        {config.amount}
+                      <div>
+                        <div className="font-semibold text-foreground text-sm">
+                          {config.label}
+                        </div>
+                        <div className="text-xs text-primary font-medium">
+                          {config.amount}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
+                  );
+                })}
+              </div>
+            </section>
+          )}
+        </div>
       </div>
     </DialogContent>
   );
