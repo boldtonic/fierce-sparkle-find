@@ -47,6 +47,58 @@ const coverageIcons: Record<string, { icon: LucideIcon; color: string }> = {
   global: { icon: Earth, color: 'text-emerald-500' },
 };
 
+const providerEmails: Record<string, string> = {
+  "SENSORBITE P.S.A.": "marcin@sensorbite.com",
+  "Space Business Innovation Centre Noordwijk": "m.leinweber@sbicnoordwijk.nl",
+  "Astrobitit Technologies  LTD": "me@astrobit.co.uk",
+  "CBO Consulting": "christophe.bodin@cbo-consulting.eu",
+  "Dikalia": "msantalena@gmail.com",
+  "Javier Benito Bilbao - DeepTech2Scale.com": "javier@deeptech2scale.com",
+  "Nuria Carrillo Martin": "carrillomartinnuria@gmail.com",
+  "CoreToBe S.r.l.": "r.piparo@coretobe.com",
+  "Space4Good B.V.": "alex@space4good.com",
+  "Building Blocks": "hgil@buildingblocks.es",
+  "Ecoloop srl SB": "m.daipre@eco-loop.it",
+  "Neuralio AI P.C.": "skotsopoulos@neuralio.ai",
+  "SoftCO2 SRL": "adrian@co2later.com",
+  "LLcloud Ltd": "stavri.nikolov@llcloud.eu",
+  "Digital Spaces Living Lab": "stavri.nikolov@digitalspaces.info",
+  "Creative Space SRL": "sorin@cspace.ro",
+  "Baltic Satellite Service": "ilze@baltsat.lv",
+  "Sparkgeo Consulting Inc.": "ahouse@sparkgeo.com",
+  "CNRS / Data Terra ": "francois.danhiez@data-terra.org",
+  "CETMA - CENTRO DI RICERCHE EUROPEO DI TECNOLOGIE DESIGN E MATERIALI": "sonia.saracino@cetma.it",
+  "Geospatial Ventures Limited": "paul.bhatia@geospatialventures.co.uk",
+  "Faculty of Space Technologies, AGH University of Krakow": "ppichor@agh.edu.pl",
+  "Geo Engine GmbH": "info@geoengine.de",
+  "Karen Ramírez Lázaro": "karenrl82@icloud.com",
+  "World from Space s.r.o.": "labohy@worldfrom.space",
+  "Composite Solutions Hungary Kft.": "mkaracsony@composite.hu",
+  "Wozify Engineering Group Kft": "balazs.slezak@wozify.com",
+  "Space Quo Vadis": "space.quovadis@yahoo.com",
+  "Raw Materials Technological Center": "elena.lopez@ctmarmol.es",
+  "Flanders Make vzw": "koen.vandenboer@flandersmake.be",
+  "Planet Partners Sp. z o.o.": "lukasz@planetpartners.pl",
+  "Data Science Europe Kft.": "gerzson.boros@datascienceeurope.ai",
+  "Podkarpackie Centrum Innowacji Sp. z o.o.": "m.dygon@pcinn.org",
+  "28DIGITAL": "Georgia.Papadopoulou@28digital.eu",
+  "TRE ALTAMIRA s.r.l.": "emanuele.passera@tre-altamira.com",
+  "Remote Sensing Business Solutions SP Z O.O.": "marek.wilgucki@terraeye.co",
+  "stichting dotSPACE": "martijn.seijger@groundstation.space",
+  "Tampere Startup Support Association (Tampereen startuptukiyhdistys ry))": "dipxr08@gmail.com",
+  "RAIL SAS": "romain.fau@kanop.io",
+  "constellr GmbH": "max.gulde@constellr.com",
+  "Agile Innovative Manufacturing SRL": "simonel.david@aim-space.com",
+  "NOVANOV": "florence.ghiron@novanov.fr",
+  "EarthPulse": "judith@earthpulse.ai",
+  "Sylva Germany UG": "michael@sylva.earth",
+  "Verhaert New Products and Services NV": "aoife.oneill@verhaert.com",
+  "UIV Urban Innovation Vienna GmbH": "viennageospace@urbaninnovation.at",
+  "N3XTCODER": "stegemann@n3xtcoder.org",
+  "Stalowowolska Agencja Rozwoju Regionalnego Sp. z o.o. (Stalowa Wola Regional Development Agency Ltd.)": "asiwek@starr.pl",
+  "Fanny Robayo": "contact@bernabeucg.com",
+};
+
 export function ProviderCard({ provider, index }: ProviderCardProps) {
   const [open, setOpen] = useState(false);
   
@@ -176,7 +228,8 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
               className="flex-1"
               onClick={(e) => {
                 e.stopPropagation();
-                window.open(`mailto:?subject=Quotation Request - ${provider.name}&body=Hello,%0D%0A%0D%0AI would like to request a quotation for your services.%0D%0A%0D%0AThank you.`, '_blank');
+                const email = providerEmails[provider.name] || '';
+                window.open(`mailto:${email}?subject=Quotation Request - ${provider.name}&body=Hello,%0D%0A%0D%0AI would like to request a quotation for your services.%0D%0A%0D%0AThank you.`, '_blank');
               }}
             >
               Ask for quotation
