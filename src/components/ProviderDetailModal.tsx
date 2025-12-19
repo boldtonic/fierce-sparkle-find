@@ -56,7 +56,7 @@ export function ProviderDetailModal({ provider }: ProviderDetailModalProps) {
   const CoverageIcon = coverage.icon;
 
   return (
-    <DialogContent className="max-w-4xl max-h-[85vh] overflow-hidden flex flex-col bg-gradient-card">
+    <DialogContent className="max-w-5xl max-h-[85vh] overflow-hidden flex flex-col bg-gradient-card">
       <DialogHeader className="pb-3 border-b border-border/50">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
