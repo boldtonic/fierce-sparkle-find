@@ -17,8 +17,7 @@ import {
   Globe2,
   Building2,
   Earth,
-  Eye,
-  Mail
+  Eye
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { LucideIcon } from 'lucide-react';
@@ -159,35 +158,17 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
             </p>
           )}
           
-          {/* Action buttons */}
-          <div className="flex gap-2 mt-3">
-            <DialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex-1 text-muted-foreground hover:text-foreground hover:bg-primary/10"
-              >
-                <Eye className="w-4 h-4 mr-1.5" />
-                View details
-              </Button>
-            </DialogTrigger>
-            {provider.contactEmail && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex-1"
-                asChild
-              >
-                <a 
-                  href={`mailto:${provider.contactEmail}?subject=Quotation Request - FIERCE Programme`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Mail className="w-4 h-4 mr-1.5" />
-                  Ask for Quotation
-                </a>
-              </Button>
-            )}
-          </div>
+          {/* View details button */}
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full mt-3 text-muted-foreground hover:text-foreground hover:bg-primary/10"
+            >
+              <Eye className="w-4 h-4 mr-1.5" />
+              View details
+            </Button>
+          </DialogTrigger>
         </CardContent>
       </Card>
       
