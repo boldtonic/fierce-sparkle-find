@@ -18,7 +18,8 @@ import {
   TrendingUp,
   Globe2,
   Building2,
-  Earth
+  Earth,
+  Mail
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { LucideIcon } from 'lucide-react';
@@ -82,18 +83,28 @@ export function ProviderDetailModal({ provider }: ProviderDetailModalProps) {
             </div>
           </div>
           
-          {provider.website && (
-            <Button asChild variant="default" size="sm" className="gap-2">
-              <a 
-                href={provider.website}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink className="w-4 h-4" />
-                Visit Website
-              </a>
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {provider.contactEmail && (
+              <Button asChild variant="outline" size="sm" className="gap-2">
+                <a href={`mailto:${provider.contactEmail}?subject=Quotation Request - FIERCE Programme`}>
+                  <Mail className="w-4 h-4" />
+                  Ask for Quotation
+                </a>
+              </Button>
+            )}
+            {provider.website && (
+              <Button asChild variant="default" size="sm" className="gap-2">
+                <a 
+                  href={provider.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Visit Website
+                </a>
+              </Button>
+            )}
+          </div>
         </div>
       </DialogHeader>
       
