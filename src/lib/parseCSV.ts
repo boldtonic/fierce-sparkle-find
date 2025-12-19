@@ -10,7 +10,6 @@ export interface Provider {
   id: string;
   name: string;
   website: string;
-  contactEmail: string;
   country: string;
   coverage: string;
   description: string;
@@ -33,10 +32,10 @@ export function parseCSV(csvText: string): Provider[] {
     if (!parts || parts.length === 0) continue;
     if (!parts[0]?.trim()) continue;
 
-    // Collect all services from all voucher columns (6, 7, 8) - shifted due to Contact Email column
-    const ideationServices = parseServicesWithCategories(parts[6] || '');
-    const scaleupServices = parseServicesWithCategories(parts[7] || '');
-    const commercialisationServices = parseServicesWithCategories(parts[8] || '');
+    // Collect all services from all voucher columns (5, 6, 7)
+    const ideationServices = parseServicesWithCategories(parts[5] || '');
+    const scaleupServices = parseServicesWithCategories(parts[6] || '');
+    const commercialisationServices = parseServicesWithCategories(parts[7] || '');
 
     // Merge all services and deduplicate
     const allServices = [...ideationServices, ...scaleupServices, ...commercialisationServices];
@@ -60,10 +59,9 @@ export function parseCSV(csvText: string): Provider[] {
       id: `provider-${providers.length}`,
       name: (parts[0] || '').trim(),
       website: normalizeUrl((parts[1] || '').trim()),
-      contactEmail: (parts[2] || '').trim(),
-      country: (parts[3] || '').trim(),
-      coverage: (parts[4] || '').trim(),
-      description: (parts[5] || '').trim(),
+      country: (parts[2] || '').trim(),
+      coverage: (parts[3] || '').trim(),
+      description: (parts[4] || '').trim(),
       services,
       voucherTypes,
     };
