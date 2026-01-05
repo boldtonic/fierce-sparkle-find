@@ -1,5 +1,5 @@
 import { Sparkles } from 'lucide-react';
-import fierceLogo from '@/assets/fierce-logo.png';
+import fierceLogo from '@/assets/fierce-logo-white.png';
 
 export function HeroSection() {
   return (

@@ -3,7 +3,7 @@ import { SearchFilters } from '@/components/SearchFilters';
 import { ProviderGrid } from '@/components/ProviderGrid';
 import { useProviders } from '@/hooks/useProviders';
 import { Loader2 } from 'lucide-react';
-import fierceLogo from '@/assets/fierce-logo.png';
+import fierceLogo from '@/assets/fierce-logo-color.png';
 
 const Index = () => {
   const {
