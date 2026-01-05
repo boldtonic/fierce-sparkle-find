@@ -3,6 +3,7 @@ import { SearchFilters } from '@/components/SearchFilters';
 import { ProviderGrid } from '@/components/ProviderGrid';
 import { useProviders } from '@/hooks/useProviders';
 import { Loader2 } from 'lucide-react';
+import fierceLogo from '@/assets/fierce-logo.png';
 
 const Index = () => {
   const {
@@ -60,10 +61,29 @@ const Index = () => {
       </main>
       
       {/* Footer */}
-      <footer className="border-t border-border/50 py-8 mt-12">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p className="font-display font-semibold text-foreground mb-2">FIERCE Programme</p>
-          <p>External Service Provider Catalogue for SMEs</p>
+      <footer className="border-t border-border/50 py-12 mt-12 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center gap-6">
+            <img 
+              src={fierceLogo} 
+              alt="FIERCE Programme Logo" 
+              className="h-12 w-auto opacity-80"
+            />
+            <div className="text-center text-sm text-muted-foreground">
+              <p className="font-display font-semibold text-foreground mb-2">FIERCE Programme</p>
+              <p className="mb-4">External Service Provider Catalogue for SMEs</p>
+              <p className="text-xs">
+                <a 
+                  href="https://project-fierce.eu/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-accent hover:underline"
+                >
+                  project-fierce.eu
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
