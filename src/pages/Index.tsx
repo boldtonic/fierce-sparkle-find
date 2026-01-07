@@ -14,14 +14,18 @@ const Index = () => {
     coverages,
     searchQuery,
     setSearchQuery,
-    selectedCountry,
-    setSelectedCountry,
-    selectedCoverage,
-    setSelectedCoverage,
+    selectedCountries,
+    addCountry,
+    removeCountry,
+    selectedCoverages,
+    addCoverage,
+    removeCoverage,
     selectedServiceCategory,
     setSelectedServiceCategory,
-    selectedVoucher,
-    setSelectedVoucher,
+    selectedVouchers,
+    addVoucher,
+    removeVoucher,
+    clearAllFilters,
   } = useProviders();
 
   return (
@@ -31,14 +35,18 @@ const Index = () => {
       <SearchFilters
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        selectedCountry={selectedCountry}
-        onCountryChange={setSelectedCountry}
-        selectedCoverage={selectedCoverage}
-        onCoverageChange={setSelectedCoverage}
+        selectedCountries={selectedCountries}
+        onCountryAdd={addCountry}
+        onCountryRemove={removeCountry}
+        selectedCoverages={selectedCoverages}
+        onCoverageAdd={addCoverage}
+        onCoverageRemove={removeCoverage}
         selectedServiceCategory={selectedServiceCategory}
         onServiceCategoryChange={setSelectedServiceCategory}
-        selectedVoucher={selectedVoucher}
-        onVoucherChange={setSelectedVoucher}
+        selectedVouchers={selectedVouchers}
+        onVoucherAdd={addVoucher}
+        onVoucherRemove={removeVoucher}
+        onClearAllFilters={clearAllFilters}
         countries={countries}
         coverages={coverages}
         totalResults={providers.length}

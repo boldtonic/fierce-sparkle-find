@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Provider, ServiceCategory, parseCSV, getUniqueCountries, getUniqueCoverages, hasServiceCategory } from '@/lib/parseCSV';
 
 export function useProviders() {
@@ -6,12 +6,12 @@ export function useProviders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // Filter states
+  // Filter states - now arrays for multi-select
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState('all');
-  const [selectedCoverage, setSelectedCoverage] = useState('all');
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [selectedCoverages, setSelectedCoverages] = useState<string[]>([]);
   const [selectedServiceCategory, setSelectedServiceCategory] = useState<ServiceCategory | 'all'>('all');
-  const [selectedVoucher, setSelectedVoucher] = useState('all');
+  const [selectedVouchers, setSelectedVouchers] = useState<string[]>([]);
 
   useEffect(() => {
     async function loadProviders() {
@@ -32,6 +32,37 @@ export function useProviders() {
 
   const countries = useMemo(() => getUniqueCountries(providers), [providers]);
   const coverages = useMemo(() => getUniqueCoverages(providers), [providers]);
+
+  // Add/remove helpers for compound filters
+  const addCountry = useCallback((country: string) => {
+    setSelectedCountries(prev => prev.includes(country) ? prev : [...prev, country]);
+  }, []);
+  
+  const removeCountry = useCallback((country: string) => {
+    setSelectedCountries(prev => prev.filter(c => c !== country));
+  }, []);
+
+  const addCoverage = useCallback((coverage: string) => {
+    setSelectedCoverages(prev => prev.includes(coverage) ? prev : [...prev, coverage]);
+  }, []);
+  
+  const removeCoverage = useCallback((coverage: string) => {
+    setSelectedCoverages(prev => prev.filter(c => c !== coverage));
+  }, []);
+
+  const addVoucher = useCallback((voucher: string) => {
+    setSelectedVouchers(prev => prev.includes(voucher) ? prev : [...prev, voucher]);
+  }, []);
+  
+  const removeVoucher = useCallback((voucher: string) => {
+    setSelectedVouchers(prev => prev.filter(v => v !== voucher));
+  }, []);
+
+  const clearAllFilters = useCallback(() => {
+    setSelectedCountries([]);
+    setSelectedCoverages([]);
+    setSelectedVouchers([]);
+  }, []);
 
   const filteredProviders = useMemo(() => {
     return providers.filter(provider => {
@@ -56,13 +87,13 @@ export function useProviders() {
         if (!searchFields.includes(query)) return false;
       }
       
-      // Country filter
-      if (selectedCountry !== 'all' && provider.country !== selectedCountry) {
+      // Country filter - OR within (match any selected country)
+      if (selectedCountries.length > 0 && !selectedCountries.includes(provider.country)) {
         return false;
       }
 
-      // Coverage filter
-      if (selectedCoverage !== 'all' && provider.coverage !== selectedCoverage) {
+      // Coverage filter - OR within (match any selected coverage)
+      if (selectedCoverages.length > 0 && !selectedCoverages.includes(provider.coverage)) {
         return false;
       }
       
@@ -71,14 +102,15 @@ export function useProviders() {
         if (!hasServiceCategory(provider, selectedServiceCategory)) return false;
       }
       
-      // Voucher type filter (secondary)
-      if (selectedVoucher !== 'all') {
-        if (!provider.voucherTypes.includes(selectedVoucher as any)) return false;
+      // Voucher type filter - OR within (match any selected voucher)
+      if (selectedVouchers.length > 0) {
+        const hasMatchingVoucher = provider.voucherTypes.some(v => selectedVouchers.includes(v));
+        if (!hasMatchingVoucher) return false;
       }
       
       return true;
     });
-  }, [providers, searchQuery, selectedCountry, selectedCoverage, selectedServiceCategory, selectedVoucher]);
+  }, [providers, searchQuery, selectedCountries, selectedCoverages, selectedServiceCategory, selectedVouchers]);
 
   return {
     providers: filteredProviders,
@@ -89,13 +121,17 @@ export function useProviders() {
     coverages,
     searchQuery,
     setSearchQuery,
-    selectedCountry,
-    setSelectedCountry,
-    selectedCoverage,
-    setSelectedCoverage,
+    selectedCountries,
+    addCountry,
+    removeCountry,
+    selectedCoverages,
+    addCoverage,
+    removeCoverage,
     selectedServiceCategory,
     setSelectedServiceCategory,
-    selectedVoucher,
-    setSelectedVoucher,
+    selectedVouchers,
+    addVoucher,
+    removeVoucher,
+    clearAllFilters,
   };
 }
