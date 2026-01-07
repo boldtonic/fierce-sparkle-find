@@ -57,11 +57,11 @@ export function parseCSV(csvText: string): Provider[] {
 
     const provider: Provider = {
       id: `provider-${providers.length}`,
-      name: (parts[0] || '').trim(),
+      name: sanitizeCSVValue((parts[0] || '').trim()),
       website: normalizeUrl((parts[1] || '').trim()),
-      country: (parts[2] || '').trim(),
+      country: sanitizeCSVValue((parts[2] || '').trim()),
       coverage: normalizeCoverage(parts[3] || ''),
-      description: (parts[4] || '').trim(),
+      description: sanitizeCSVValue((parts[4] || '').trim()),
       services,
       voucherTypes,
     };
@@ -145,16 +145,16 @@ function parseServicesWithCategories(servicesString: string): ServiceItem[] {
       if (serviceName) {
         items.push({
           category,
-          name: serviceName,
-          fullLabel: trimmed,
+          name: sanitizeCSVValue(serviceName),
+          fullLabel: sanitizeCSVValue(trimmed),
         });
       }
     } else {
       // Fallback: try to determine category from content
       items.push({
         category: guessCategory(trimmed),
-        name: trimmed,
-        fullLabel: trimmed,
+        name: sanitizeCSVValue(trimmed),
+        fullLabel: sanitizeCSVValue(trimmed),
       });
     }
   }
@@ -189,8 +189,21 @@ function deduplicateServices(services: ServiceItem[]): ServiceItem[] {
   });
 }
 
+// Sanitize CSV values to prevent formula injection attacks
+// Characters =, +, -, @ at the start can execute formulas in spreadsheet apps
+function sanitizeCSVValue(value: string): string {
+  if (!value) return value;
+  const dangerousChars = ['=', '+', '-', '@'];
+  const trimmed = value.trim();
+  if (trimmed.length > 0 && dangerousChars.includes(trimmed[0])) {
+    return "'" + trimmed; // Prefix with single quote to neutralize formula
+  }
+  return trimmed;
+}
+
 function normalizeCoverage(coverage: string): string {
-  const lower = coverage.toLowerCase().trim();
+  const sanitized = sanitizeCSVValue(coverage);
+  const lower = sanitized.toLowerCase().trim();
   
   // Normalize all EU/Europe variations to "Europe"
   if (
@@ -205,7 +218,7 @@ function normalizeCoverage(coverage: string): string {
     return 'Europe';
   }
   
-  return coverage.trim();
+  return sanitized;
 }
 
 function normalizeUrl(url: string): string {
