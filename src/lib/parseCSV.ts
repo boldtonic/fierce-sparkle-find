@@ -60,7 +60,7 @@ export function parseCSV(csvText: string): Provider[] {
       name: (parts[0] || '').trim(),
       website: normalizeUrl((parts[1] || '').trim()),
       country: (parts[2] || '').trim(),
-      coverage: (parts[3] || '').trim(),
+      coverage: normalizeCoverage(parts[3] || ''),
       description: (parts[4] || '').trim(),
       services,
       voucherTypes,
@@ -187,6 +187,25 @@ function deduplicateServices(services: ServiceItem[]): ServiceItem[] {
     seen.add(key);
     return true;
   });
+}
+
+function normalizeCoverage(coverage: string): string {
+  const lower = coverage.toLowerCase().trim();
+  
+  // Normalize all EU/Europe variations to "Europe"
+  if (
+    lower === 'eu' ||
+    lower === 'eu-wide' ||
+    lower === 'eu wide' ||
+    lower === 'europe' ||
+    lower === 'european' ||
+    lower.includes('eu-wide') ||
+    lower.includes('eu wide')
+  ) {
+    return 'Europe';
+  }
+  
+  return coverage.trim();
 }
 
 function normalizeUrl(url: string): string {
