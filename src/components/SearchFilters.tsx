@@ -21,14 +21,18 @@ import { FilterChip } from './FilterChip';
 interface SearchFiltersProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  selectedCountry: string;
-  onCountryChange: (country: string) => void;
-  selectedCoverage: string;
-  onCoverageChange: (coverage: string) => void;
+  selectedCountries: string[];
+  onCountryAdd: (country: string) => void;
+  onCountryRemove: (country: string) => void;
+  selectedCoverages: string[];
+  onCoverageAdd: (coverage: string) => void;
+  onCoverageRemove: (coverage: string) => void;
   selectedServiceCategory: ServiceCategory | 'all';
   onServiceCategoryChange: (category: ServiceCategory | 'all') => void;
-  selectedVoucher: string;
-  onVoucherChange: (voucher: string) => void;
+  selectedVouchers: string[];
+  onVoucherAdd: (voucher: string) => void;
+  onVoucherRemove: (voucher: string) => void;
+  onClearAllFilters: () => void;
   countries: string[];
   coverages: string[];
   totalResults: number;
@@ -48,24 +52,39 @@ const voucherLabels: Record<string, string> = {
   commercialisation: 'Commercialisation €25K',
 };
 
+const allVoucherOptions = [
+  { value: 'ideation', label: 'Ideation €25K' },
+  { value: 'scaleup', label: 'Scale-up €50K' },
+  { value: 'commercialisation', label: 'Commercialisation €25K' },
+];
+
 export function SearchFilters({
   searchQuery,
   onSearchChange,
-  selectedCountry,
-  onCountryChange,
-  selectedCoverage,
-  onCoverageChange,
+  selectedCountries,
+  onCountryAdd,
+  onCountryRemove,
+  selectedCoverages,
+  onCoverageAdd,
+  onCoverageRemove,
   selectedServiceCategory,
   onServiceCategoryChange,
-  selectedVoucher,
-  onVoucherChange,
+  selectedVouchers,
+  onVoucherAdd,
+  onVoucherRemove,
+  onClearAllFilters,
   countries,
   coverages,
   totalResults,
 }: SearchFiltersProps) {
   const [addFilterOpen, setAddFilterOpen] = useState(false);
 
-  const hasActiveSecondaryFilters = selectedCountry !== 'all' || selectedCoverage !== 'all' || selectedVoucher !== 'all';
+  const hasActiveSecondaryFilters = selectedCountries.length > 0 || selectedCoverages.length > 0 || selectedVouchers.length > 0;
+
+  // Filter out already-selected options
+  const availableCountries = countries.filter(c => !selectedCountries.includes(c));
+  const availableCoverages = coverages.filter(c => !selectedCoverages.includes(c));
+  const availableVouchers = allVoucherOptions.filter(v => !selectedVouchers.includes(v.value));
 
   return (
     <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b border-border/50 py-3">
@@ -92,31 +111,34 @@ export function SearchFilters({
             )}
           </div>
 
-          {/* Active filter chips */}
-          {selectedCountry !== 'all' && (
+          {/* Active filter chips - multiple per type */}
+          {selectedCountries.map(country => (
             <FilterChip
+              key={`country-${country}`}
               label="Country"
-              value={selectedCountry}
-              onRemove={() => onCountryChange('all')}
+              value={country}
+              onRemove={() => onCountryRemove(country)}
               variant="country"
             />
-          )}
-          {selectedCoverage !== 'all' && (
+          ))}
+          {selectedCoverages.map(coverage => (
             <FilterChip
+              key={`coverage-${coverage}`}
               label="Coverage"
-              value={selectedCoverage}
-              onRemove={() => onCoverageChange('all')}
+              value={coverage}
+              onRemove={() => onCoverageRemove(coverage)}
               variant="coverage"
             />
-          )}
-          {selectedVoucher !== 'all' && (
+          ))}
+          {selectedVouchers.map(voucher => (
             <FilterChip
+              key={`voucher-${voucher}`}
               label="Voucher"
-              value={voucherLabels[selectedVoucher] || selectedVoucher}
-              onRemove={() => onVoucherChange('all')}
+              value={voucherLabels[voucher] || voucher}
+              onRemove={() => onVoucherRemove(voucher)}
               variant="voucher"
             />
-          )}
+          ))}
 
           {/* Service category pills */}
           <div className="flex items-center gap-1.5 border-l border-border/50 pl-3">
@@ -153,92 +175,98 @@ export function SearchFilters({
             <PopoverContent className="w-64 p-3 bg-card" align="start">
               <div className="space-y-3">
                 {/* Country filter */}
-                <div>
-                  <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
-                    <MapPin className="w-3.5 h-3.5" />
-                    Country (HQ)
-                  </label>
-                  <Select 
-                    value={selectedCountry} 
-                    onValueChange={(val) => {
-                      onCountryChange(val);
-                      if (val !== 'all') setAddFilterOpen(false);
-                    }}
-                  >
-                    <SelectTrigger className="h-8 text-xs bg-background">
-                      <SelectValue placeholder="Select country" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Countries</SelectItem>
-                      {countries.map(country => (
-                        <SelectItem key={country} value={country}>
-                          {country}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {availableCountries.length > 0 && (
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
+                      <MapPin className="w-3.5 h-3.5" />
+                      Country (HQ)
+                    </label>
+                    <Select 
+                      value=""
+                      onValueChange={(val) => {
+                        if (val) {
+                          onCountryAdd(val);
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="h-8 text-xs bg-background">
+                        <SelectValue placeholder="Select country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableCountries.map(country => (
+                          <SelectItem key={country} value={country}>
+                            {country}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
                 {/* Coverage filter */}
-                <div>
-                  <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
-                    <Globe2 className="w-3.5 h-3.5" />
-                    Geographical Coverage
-                  </label>
-                  <Select 
-                    value={selectedCoverage} 
-                    onValueChange={(val) => {
-                      onCoverageChange(val);
-                      if (val !== 'all') setAddFilterOpen(false);
-                    }}
-                  >
-                    <SelectTrigger className="h-8 text-xs bg-background">
-                      <SelectValue placeholder="Select coverage" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Coverage</SelectItem>
-                      {coverages.map(coverage => (
-                        <SelectItem key={coverage} value={coverage}>
-                          {coverage}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {availableCoverages.length > 0 && (
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
+                      <Globe2 className="w-3.5 h-3.5" />
+                      Geographical Coverage
+                    </label>
+                    <Select 
+                      value=""
+                      onValueChange={(val) => {
+                        if (val) {
+                          onCoverageAdd(val);
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="h-8 text-xs bg-background">
+                        <SelectValue placeholder="Select coverage" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableCoverages.map(coverage => (
+                          <SelectItem key={coverage} value={coverage}>
+                            {coverage}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
                 {/* Voucher type filter */}
-                <div>
-                  <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
-                    <Ticket className="w-3.5 h-3.5" />
-                    Voucher Type
-                  </label>
-                  <Select 
-                    value={selectedVoucher} 
-                    onValueChange={(val) => {
-                      onVoucherChange(val);
-                      if (val !== 'all') setAddFilterOpen(false);
-                    }}
-                  >
-                    <SelectTrigger className="h-8 text-xs bg-background">
-                      <SelectValue placeholder="Select voucher" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Vouchers</SelectItem>
-                      <SelectItem value="ideation">Ideation €25K</SelectItem>
-                      <SelectItem value="scaleup">Scale-up €50K</SelectItem>
-                      <SelectItem value="commercialisation">Commercialisation €25K</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                {availableVouchers.length > 0 && (
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
+                      <Ticket className="w-3.5 h-3.5" />
+                      Voucher Type
+                    </label>
+                    <Select 
+                      value=""
+                      onValueChange={(val) => {
+                        if (val) {
+                          onVoucherAdd(val);
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="h-8 text-xs bg-background">
+                        <SelectValue placeholder="Select voucher" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableVouchers.map(v => (
+                          <SelectItem key={v.value} value={v.value}>
+                            {v.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
                 {hasActiveSecondaryFilters && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      onCountryChange('all');
-                      onCoverageChange('all');
-                      onVoucherChange('all');
+                      onClearAllFilters();
                       setAddFilterOpen(false);
                     }}
                     className="w-full h-7 text-xs text-muted-foreground"
