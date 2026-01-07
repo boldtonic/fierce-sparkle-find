@@ -9,7 +9,7 @@ export function HeroSection() {
       style={{
         backgroundImage: `url(${fierceBackground})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: 'right center',
       }}
     >
       {/* Dark overlay for text readability */}
