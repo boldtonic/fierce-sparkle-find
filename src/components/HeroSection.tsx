@@ -4,17 +4,18 @@ import fierceBackground from '@/assets/fierce-background.jpg';
 
 export function HeroSection() {
   return (
-    <section 
-      className="relative overflow-hidden text-primary-foreground"
-      style={{
-        backgroundImage: `url(${fierceBackground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: '85% center',
-      }}
-    >
+    <section className="relative overflow-hidden bg-primary text-primary-foreground">
+      {/* Background image (shifted right + zoomed) */}
+      <img
+        src={fierceBackground}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ transform: 'translateX(320px) scale(1.25)' }}
+      />
+
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40" />
-      
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/55 to-primary/85" />
       <div className="relative container mx-auto px-4 py-16 md:py-24">
         <div className="max-w-3xl mx-auto text-center">
           {/* Fierce Logo */}
