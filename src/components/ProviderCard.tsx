@@ -81,7 +81,7 @@ const providerEmails: Record<string, string> = {
   "Planet Partners Sp. z o.o.": "lukasz@planetpartners.pl",
   "Data Science Europe Kft.": "gerzson.boros@datascienceeurope.ai",
   "Podkarpackie Centrum Innowacji Sp. z o.o.": "m.dygon@pcinn.org",
-  "28DIGITAL": "Georgia.Papadopoulou@28digital.eu",
+  "28DIGITAL": "georgia.papadopoulou@28digital.eu",
   "TRE ALTAMIRA s.r.l.": "emanuele.passera@tre-altamira.com",
   "Remote Sensing Business Solutions SP Z O.O.": "marek.wilgucki@terraeye.co",
   "stichting dotSPACE": "martijn.seijger@groundstation.space",
