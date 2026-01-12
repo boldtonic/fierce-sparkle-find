@@ -97,6 +97,7 @@ const providerEmails: Record<string, string> = {
   "N3XTCODER": "stegemann@n3xtcoder.org",
   "Stalowowolska Agencja Rozwoju Regionalnego Sp. z o.o. (Stalowa Wola Regional Development Agency Ltd.)": "asiwek@starr.pl",
   "Fanny Robayo": "contact@bernabeucg.com",
+  "Octovus P.C.": "nikolaos@octovus.ai",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
