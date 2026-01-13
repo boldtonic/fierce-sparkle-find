@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import fierceLogo from '@/assets/fierce-logo-white.png';
 
 export function HeroSection() {
@@ -33,7 +33,7 @@ export function HeroSection() {
           
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
-            <Sparkles className="w-4 h-4 text-accent" />
+            <LayoutGrid className="w-4 h-4 text-accent" />
             <span className="text-sm font-medium">External Service Provider Catalogue</span>
           </div>
           
