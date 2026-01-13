@@ -184,7 +184,7 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
                     className="text-xs px-2 py-0.5 opacity-80"
                   >
                     <config.icon className="w-3 h-3 mr-1" />
-                    {config.label} <span className="opacity-70">Up to {config.amount}</span>
+                    {config.label} · <span className="opacity-70">Up to {config.amount}</span>
                   </Badge>
                 );
               })}
