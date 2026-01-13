@@ -54,15 +54,15 @@ export function HeroSection() {
           {/* Stats */}
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-accent">€25K</div>
+              <div className="text-3xl md:text-4xl font-display font-bold text-accent">Up to €25K</div>
               <div className="text-sm text-primary-foreground/70">Ideation Voucher</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-accent">€50K</div>
+              <div className="text-3xl md:text-4xl font-display font-bold text-accent">Up to €50K</div>
               <div className="text-sm text-primary-foreground/70">Scale-up Voucher</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-accent">€25K</div>
+              <div className="text-3xl md:text-4xl font-display font-bold text-accent">Up to €25K</div>
               <div className="text-sm text-primary-foreground/70">Commercialisation</div>
             </div>
           </div>
