@@ -170,7 +170,7 @@ export function ProviderDetailModal({ provider }: ProviderDetailModalProps) {
                           {config.label}
                         </div>
                         <div className="text-xs text-primary font-medium">
-                          {config.amount}
+                          Up to {config.amount}
                         </div>
                       </div>
                     </div>
