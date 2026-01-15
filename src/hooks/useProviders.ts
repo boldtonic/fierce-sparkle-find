@@ -16,7 +16,15 @@ export function useProviders() {
   useEffect(() => {
     async function loadProviders() {
       try {
-        const response = await fetch('/data/providers.csv');
+        // Bust any CDN/browser caching so data edits reflect immediately
+        const url = `/data/providers.csv?v=${Date.now()}`;
+        const response = await fetch(url, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache',
+          },
+        });
         if (!response.ok) throw new Error('Failed to load providers');
         const text = await response.text();
         const parsed = parseCSV(text);
