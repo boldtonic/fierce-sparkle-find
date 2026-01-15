@@ -74,7 +74,7 @@ const providerEmails: Record<string, string> = {
   "Karen Ramírez Lázaro": "karenrl82@icloud.com",
   "World from Space s.r.o.": "labohy@worldfrom.space",
   "Composite Solutions Hungary Kft.": "mkaracsony@composite.hu",
-  "Wozify Engineering Group Kft": "balazs.slezak@wozify.com",
+  "Astro42": "fierce@astro42.com",
   "Space Quo Vadis": "space.quovadis@yahoo.com",
   "Raw Materials Technological Center": "elena.lopez@ctmarmol.es",
   "Flanders Make vzw": "koen.vandenboer@flandersmake.be",
