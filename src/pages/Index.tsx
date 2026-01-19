@@ -4,6 +4,7 @@ import { ProviderGrid } from '@/components/ProviderGrid';
 import { useProviders } from '@/hooks/useProviders';
 import { Loader2 } from 'lucide-react';
 import fierceLogo from '@/assets/fierce-logo-color.png';
+import euFundingLogo from '@/assets/eu-funding.jpg';
 
 const Index = () => {
   const {
@@ -89,6 +90,18 @@ const Index = () => {
                 >
                   project-fierce.eu
                 </a>
+              </p>
+            </div>
+            
+            {/* EU Funding Disclaimer */}
+            <div className="mt-6 pt-6 border-t border-border/50 flex flex-col items-center gap-4 max-w-3xl">
+              <img 
+                src={euFundingLogo} 
+                alt="Funded by the European Union" 
+                className="h-16 w-auto"
+              />
+              <p className="text-xs text-muted-foreground text-center leading-relaxed">
+                Funded by the European Union under GA no. 101177496. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or HaDEA. Neither the European Union nor the granting authority can be held responsible for them.
               </p>
             </div>
           </div>
