@@ -94,13 +94,13 @@ const Index = () => {
             </div>
             
             {/* EU Funding Disclaimer */}
-            <div className="mt-6 pt-6 border-t border-border/50 flex flex-col items-center gap-4 max-w-3xl">
+            <div className="mt-6 pt-6 border-t border-border/50 flex flex-row items-center gap-4 max-w-4xl">
               <img 
                 src={euFundingLogo} 
                 alt="Funded by the European Union" 
-                className="h-10 w-auto"
+                className="h-10 w-auto flex-shrink-0"
               />
-              <p className="text-xs text-muted-foreground text-center leading-relaxed">
+              <p className="text-xs text-muted-foreground text-left leading-relaxed">
                 Funded by the European Union under GA no. 101177496. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or HaDEA. Neither the European Union nor the granting authority can be held responsible for them.
               </p>
             </div>
