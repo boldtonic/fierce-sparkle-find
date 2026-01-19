@@ -98,7 +98,7 @@ const Index = () => {
               <img 
                 src={euFundingLogo} 
                 alt="Funded by the European Union" 
-                className="h-16 w-auto"
+                className="h-10 w-auto"
               />
               <p className="text-xs text-muted-foreground text-center leading-relaxed">
                 Funded by the European Union under GA no. 101177496. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or HaDEA. Neither the European Union nor the granting authority can be held responsible for them.
