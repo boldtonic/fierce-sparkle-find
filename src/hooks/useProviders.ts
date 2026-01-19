@@ -1,6 +1,16 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Provider, ServiceCategory, parseCSV, getUniqueCountries, getUniqueCoverages, hasServiceCategory } from '@/lib/parseCSV';
 
+// Fisher-Yates shuffle for unbiased randomization
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export function useProviders() {
   const [providers, setProviders] = useState<Provider[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +38,8 @@ export function useProviders() {
         if (!response.ok) throw new Error('Failed to load providers');
         const text = await response.text();
         const parsed = parseCSV(text);
-        setProviders(parsed);
+        // Randomize order on each page load for fair exposure
+        setProviders(shuffleArray(parsed));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load data');
       } finally {
