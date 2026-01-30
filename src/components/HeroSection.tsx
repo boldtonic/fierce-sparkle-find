@@ -1,15 +1,13 @@
 import { MousePointerClick } from 'lucide-react';
 import fierceLogo from '@/assets/fierce-logo-white.png';
-
 export function HeroSection() {
-  return (
-    <section className="relative overflow-hidden bg-gradient-hero text-primary-foreground">
+  return <section className="relative overflow-hidden bg-gradient-hero text-primary-foreground">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-10">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -24,11 +22,7 @@ export function HeroSection() {
         <div className="max-w-3xl mx-auto text-center">
           {/* Fierce Logo */}
           <div className="flex justify-center mb-6">
-            <img 
-              src={fierceLogo} 
-              alt="FIERCE Programme Logo" 
-              className="h-20 md:h-24 w-auto"
-            />
+            <img src={fierceLogo} alt="FIERCE Programme Logo" className="h-20 md:h-24 w-auto" />
           </div>
           
           {/* Badge */}
@@ -55,11 +49,11 @@ export function HeroSection() {
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-display font-bold text-accent">Up to €25K</div>
-              <div className="text-sm text-primary-foreground/70">Ideation Voucher</div>
+              <div className="text-sm text-primary-foreground/70">Ideation</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-display font-bold text-accent">Up to €50K</div>
-              <div className="text-sm text-primary-foreground/70">Scale-up Voucher</div>
+              <div className="text-sm text-primary-foreground/70">Scale-up</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-display font-bold text-accent">Up to €25K</div>
@@ -72,12 +66,8 @@ export function HeroSection() {
       {/* Wave divider */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-          <path 
-            d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" 
-            className="fill-background"
-          />
+          <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" className="fill-background" />
         </svg>
       </div>
-    </section>
-  );
+    </section>;
 }
