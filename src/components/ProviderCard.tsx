@@ -129,6 +129,18 @@ const providerEmails: Record<string, string> = {
   "Astrobitit Technologies  LTD": "me@astrobit.co.uk",
   "Space Business Innovation Centre Noordwijk": "m.leinweber@sbicnoordwijk.nl",
   "SENSORBITE P.S.A.": "marcin@sensorbite.com",
+  // New providers added 2026-02-09
+  "GRAS Global Risk Assessment Services GmbH": "connect@gras-system.org",
+  "Nazka Mapps bv": "ides@nazka.be",
+  "AIRMO G.m.b.H": "eduardo@airmo.io",
+  "Geocledian GmbH": "stefan.scherer@geocledian.com",
+  "CAIUS E.E.": "info@caius.gr",
+  "Weatherwise SAS": "florian@weatherwise.fr",
+  "Marple GmbH": "ds@marple.info",
+  "Lanz GmbH": "daniel@lanz.ai",
+  "Tilebox Technologies Ltd": "laura.costa@tilebox.com",
+  "thriveGEO GmbH": "sabrina@thrivegeo.com",
+  "Eyecon - Software Lda.": "mcorreia@eyecon-group.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
