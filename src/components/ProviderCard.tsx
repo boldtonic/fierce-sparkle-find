@@ -141,6 +141,7 @@ const providerEmails: Record<string, string> = {
   "Tilebox Technologies Ltd": "laura.costa@tilebox.com",
   "thriveGEO GmbH": "sabrina@thrivegeo.com",
   "Eyecon - Software Lda.": "mcorreia@eyecon-group.com",
+  "Astro42": "attila.nemethy@astro42.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
