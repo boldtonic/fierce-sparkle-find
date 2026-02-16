@@ -142,6 +142,15 @@ const providerEmails: Record<string, string> = {
   "thriveGEO GmbH": "sabrina@thrivegeo.com",
   "Eyecon - Software Lda.": "mcorreia@eyecon-group.com",
   "Astro42": "attila.nemethy@astro42.com",
+  // New providers added 2026-02-16
+  "Advance Insight BV": "bernard@advanceinsight.dev",
+  "Blue Dot Solutions": "krzysztof.kanawka@bluedotsolutions.eu",
+  "3Bee S.r.l": "elisa.bertesago@3bee.com",
+  "ROAD HR DOO": "ugljesa@road.rs",
+  "Plan 9 from outer space ltd": "ollie@olliewalsh.com",
+  "UNIVERSITAT POLITECNICA DE CATALUNYA": "joaquin.del.rio@upc.edu",
+  "TheSpaceBuilder": "hugo@thespacebuilder.com",
+  "ARIDEX LTD": "a.zographos@outlook.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
