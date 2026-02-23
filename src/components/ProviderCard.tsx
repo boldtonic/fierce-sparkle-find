@@ -151,6 +151,15 @@ const providerEmails: Record<string, string> = {
   "UNIVERSITAT POLITECNICA DE CATALUNYA": "joaquin.del.rio@upc.edu",
   "TheSpaceBuilder": "hugo@thespacebuilder.com",
   "ARIDEX LTD": "a.zographos@outlook.com",
+  // New providers added 2026-02-23
+  "France Geomatique": "contact@fgeo.fr",
+  "USTUN ENERJI MUHENDISLIK LTD. STI.": "ferhatbingol@ustunenerji.com",
+  "Berzen Co. Ltd": "dannyisraeli539@gmail.com",
+  "K.P. INNOSERV LTD": "info@kpinnoserv.com",
+  "Business Ready Now Limited": "E.gill@businessreadynow.com",
+  "SM GEODIM S.L.": "lfernandez@geodim.es",
+  "Another Earth EOD FlexCo": "hello@anotherearth.ai",
+  "P. Hacklander Unternehmensberatung": "philipp.hacklaender@gmail.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
