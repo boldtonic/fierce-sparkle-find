@@ -160,6 +160,13 @@ const providerEmails: Record<string, string> = {
   "SM GEODIM S.L.": "lfernandez@geodim.es",
   "Another Earth EOD FlexCo": "hello@anotherearth.ai",
   "P. Hacklander Unternehmensberatung": "philipp.hacklaender@gmail.com",
+  "Kolibree-Tech": "innovation@kolibree-tech.com",
+  "Regio OU": "geospatial@regio.ee",
+  "Eco Modeling Solutions di Dallera Davide": "davide.dallera@ecomodeling.it",
+  "Manteo AI P.C.": "ioannis@manteo.ai",
+  "The SpaceLead": "contact@thespacelead.com",
+  "VB-Informatika d.o.o.": "valter.bratkovic@vb-informatika.com",
+  "AGROTECNOLOGIAS CANARIAS": "info@agrotecan.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
