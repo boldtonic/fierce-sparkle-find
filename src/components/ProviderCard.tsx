@@ -167,6 +167,14 @@ const providerEmails: Record<string, string> = {
   "The SpaceLead": "contact@thespacelead.com",
   "VB-Informatika d.o.o.": "valter.bratkovic@vb-informatika.com",
   "AGROTECNOLOGIAS CANARIAS": "info@agrotecan.com",
+  // New providers added 2026-03-04
+  "SIXPHERE TECHNOLOGIES SL": "innovation@sixphere.com",
+  "Urban Impact Berlin GmbH": "marina@urbanimpact.agency",
+  "Guiders OU": "w.rashidy@guidersconsult.com",
+  "Go Bridge The Gap S.L.": "laura@gobridgethegap.com",
+  "NU4SPACE s.r.o.": "john.z@volny.cz",
+  "Mirai SRL": "caterina.calefato@miraidigital.io",
+  "Nissatech Innovation Centre": "Nenad.Stojanovic@nissatech.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
