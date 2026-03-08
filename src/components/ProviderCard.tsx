@@ -175,6 +175,11 @@ const providerEmails: Record<string, string> = {
   "NU4SPACE s.r.o.": "john.z@volny.cz",
   "Mirai SRL": "caterina.calefato@miraidigital.io",
   "Nissatech Innovation Centre": "Nenad.Stojanovic@nissatech.com",
+  // New providers added 2026-03-08
+  "Philopater macavious": "michel.qlini@gmail.com",
+  "Sanabil": "esalma2010@gmail.com",
+  "Giscout S.L": "j.recarte@giscout.com",
+  "Anofa Engineering, Planning, Informatics Ltd.": "emin.mentese@anofa.co",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
