@@ -180,6 +180,15 @@ const providerEmails: Record<string, string> = {
   "Sanabil": "esalma2010@gmail.com",
   "Giscout S.L": "j.recarte@giscout.com",
   "Anofa Engineering, Planning, Informatics Ltd.": "emin.mentese@anofa.co",
+  // New providers added 2026-03-16
+  "Trabajos Catastrales S.A.U (Tracasa Global)": "bbasterra@tracasa.es",
+  "Leo Investments UG": "florian@wunderfunds.de",
+  "Missionware PC": "Info@missionware.com",
+  "Datonika Limited": "abhishek_upadhyay@datonika.com",
+  "DOMINA SRL": "cristina.vercellino@domina-biella.it",
+  "Griffin Software Solutions P.C.": "info@griffinware.gr",
+  "AlongRoute": "team@alongroute.com",
+  "Ingedata Pte Ltd": "eric.feddal@ingedata.ai",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
