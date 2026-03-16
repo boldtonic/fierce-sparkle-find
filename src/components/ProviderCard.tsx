@@ -189,6 +189,7 @@ const providerEmails: Record<string, string> = {
   "Griffin Software Solutions P.C.": "info@griffinware.gr",
   "AlongRoute": "team@alongroute.com",
   "Ingedata Pte Ltd": "eric.feddal@ingedata.ai",
+  "OroraTech GmbH": "georgios.fotopoulos@ororatech.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
