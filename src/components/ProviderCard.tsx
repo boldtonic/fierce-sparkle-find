@@ -190,6 +190,15 @@ const providerEmails: Record<string, string> = {
   "AlongRoute": "team@alongroute.com",
   "Ingedata Pte Ltd": "eric.feddal@ingedata.ai",
   "OroraTech GmbH": "georgios.fotopoulos@ororatech.com",
+  // New providers added 2026-03-23
+  "Agriventures": "start@agriventures.co",
+  "ClearSky Vision ApS": "contact@clearsky.vision",
+  "Development Seed, Unipessoal Lda": "olaf@developmentseed.org",
+  "Quaesta AI": "luigi.malago@quaesta.ai",
+  "GOODFOREST": "francois.caron@goodforest.fr",
+  "ADL-INNET ASBL": "kenizomoh@adl-innet.com",
+  "DitchNow BV": "matin@ditchnow.com",
+  "Enrico Lucca": "lucca.enrico@outlook.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
