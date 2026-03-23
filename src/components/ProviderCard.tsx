@@ -199,6 +199,7 @@ const providerEmails: Record<string, string> = {
   "ADL-INNET ASBL": "kenizomoh@adl-innet.com",
   "DitchNow BV": "matin@ditchnow.com",
   "Enrico Lucca": "lucca.enrico@outlook.com",
+  "Prishtina REA": "prishtinarea@yahoo.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
