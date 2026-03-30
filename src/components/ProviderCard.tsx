@@ -200,6 +200,19 @@ const providerEmails: Record<string, string> = {
   "DitchNow BV": "matin@ditchnow.com",
   "Enrico Lucca": "lucca.enrico@outlook.com",
   "Prishtina REA": "prishtinarea@yahoo.com",
+  // New providers added 2026-03-30
+  "EDIH-Zagore": "office@edih-zagore.eu",
+  "IP Neprokin Andrey": "mail@andrewn.name",
+  "mYields Kft": "sandorfehervari@myields.com",
+  "Musard Corentin EI": "corentin@orbit.quest",
+  "CinSOIL GmbH": "tavseef.shah@cinsoil.eu",
+  "Universidad Carlos III de Madrid (Laboratorio de Sensores Teledetección e Imagen en el Infrarrojo)": "melendez@fis.uc3m.es",
+  "OPPA Digital LLC": "Karim.wanny@outlook.com",
+  "Atenea Labs": "hi@atenea.dev",
+  "Remote Sensing Solutions GmbH": "franke@rssgmbh.de",
+  "Moss Hub Ltd.": "info@moss-hub.com",
+  "Flahtik": "contact@flahtik.com",
+  "HowToTransform AB": "abirh@how2transform.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
