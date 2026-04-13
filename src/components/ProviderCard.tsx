@@ -213,6 +213,16 @@ const providerEmails: Record<string, string> = {
   "Moss Hub Ltd.": "info@moss-hub.com",
   "Flahtik": "contact@flahtik.com",
   "HowToTransform AB": "abirh@how2transform.com",
+  // New providers added 2026-04-13
+  "B.W.I. (Blue Water Intelligence)": "asdevallet@bwi.earth",
+  "GeoSolutions SRL": "attilio.vaccaro@geosolutionsgroup.com",
+  "VISTA Geowissenschaftliche Fernerkundung GmbH": "migdall@vista-geo.de",
+  "amicaldo GmbH": "deters@amicaldo.de",
+  "DREAM DEVELOPMENT SRL": "office@dreamdevelopment.ro",
+  "OneSoil LTD": "v.paskar@onesoil.ai",
+  "INDE Robotics Oy": "elad.bloch@inde-robotics.com",
+  "AssemblyPoint Limited, trading as Zartis": "albena@zartis.com",
+  "Geospatial Research Center (Geomakani)": "ahmed.elawadly@geomakani.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
