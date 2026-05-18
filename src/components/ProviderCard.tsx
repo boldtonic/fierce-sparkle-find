@@ -223,6 +223,7 @@ const providerEmails: Record<string, string> = {
   "INDE Robotics Oy": "elad.bloch@inde-robotics.com",
   "AssemblyPoint Limited, trading as Zartis": "albena@zartis.com",
   "Geospatial Research Center (Geomakani)": "ahmed.elawadly@geomakani.com",
+  "Panagiotis Kinanlis": "p.kinanlis@gmail.com",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
