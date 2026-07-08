@@ -224,6 +224,15 @@ const providerEmails: Record<string, string> = {
   "AssemblyPoint Limited, trading as Zartis": "albena@zartis.com",
   "Geospatial Research Center (Geomakani)": "ahmed.elawadly@geomakani.com",
   "Panagiotis Kinanlis": "p.kinanlis@gmail.com",
+  "Greenroads Limited": "claire@greenroads.ai",
+  "Spascat Technologies": "roger.huerta@spascat.com",
+  "Smart Studios Ltd.": "johan@smartstudios.io",
+  "Wodzynski, e.U.": "fierce@glatt.at",
+  "keySquare Network UG (haftungsbeschränkt) & Co. KG": "carolin.freitag@keysquare.de",
+  "Predictim Globe": "contact@predictim-globe.com",
+  "Astreo srl": "alberto.marri@astreotech.com",
+  "Science and Technology Park of Montenegro": "radivoje.drobnjak@ntpark.me",
+  "Winsoft": "ivan.bulajic@winsoft.me",
 };
 
 export function ProviderCard({ provider, index }: ProviderCardProps) {
