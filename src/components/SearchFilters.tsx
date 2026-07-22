@@ -141,7 +141,7 @@ export function SearchFilters({
           ))}
 
           {/* Service category pills */}
-          <div className="flex items-center gap-1.5 border-l border-border/50 pl-3">
+          <div className="flex flex-wrap items-center gap-1.5 sm:border-l sm:border-border/50 sm:pl-3">
             {serviceCategories.map(cat => {
               const isSelected = selectedServiceCategory === cat.value;
               return (

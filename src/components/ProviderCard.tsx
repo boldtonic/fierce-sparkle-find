@@ -336,7 +336,7 @@ export function ProviderCard({ provider, index }: ProviderCardProps) {
           )}
           
           {/* Action buttons */}
-          <div className="flex gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3">
             <DialogTrigger asChild>
               <Button
                 variant="ghost"
